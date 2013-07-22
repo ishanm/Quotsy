@@ -1,0 +1,155 @@
+body{
+    background-color: #FBF0D9;
+}
+
+#quoteDiv{
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    width: 70%;
+    height: 30%;
+    top: 35%;
+    left: 15%;
+}
+
+#footer{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    height: 32px;
+    width: 32px;
+}
+
+#settingsButton{
+    position: absolute;
+    bottom: 14px;
+    left: 10px;
+    background: url('/images/preferences.png');
+    height: 32px;
+    width: 32px;
+}
+
+#settingsButton:hover{
+    background: url('/images/preferences2.png');
+}
+
+h1{
+    /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
+    /*font-style: italic;*/
+    font-family: 'Tangerine', cursive;
+    font-size: 2.90em;
+}
+
+/* Message bar stuff */
+
+.warning {
+    border: 1px solid #707070;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px 0 #DEDEDE;
+    margin: 10px 175px;
+    padding:7px 5px 7px 5px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-color: #DEDEDE;
+}
+
+#warningImage{
+    float: left;
+    position: relative;
+    bottom: 6px;
+    left: 3px;
+}
+
+#warningText{
+    color: #6B6B6B;
+    margin-left: 50px;
+    margin-right: 260px;
+}
+
+#loginButton{
+    position: absolute;
+    right: 360px;
+    top:15px;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700));
+}
+
+#loginButton:hover{
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6DB700), to(#99CF00));    
+}
+
+#registerButton{
+    position: absolute;
+    right: 250px;
+    top:15px;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#27bdf0), to(#20a6d4));
+}
+
+#registerButton:hover{
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#20a6d4), to(#27bdf0));
+}
+
+#closeButton{
+    position: absolute;
+    background: url('/images/closeButton.png');
+    right: 190px;
+    top:12px;
+    height:32px;
+    width:32px;
+}
+
+#closeButton:hover{
+    background: url('/images/closeButton2.png');
+}
+
+/*Credit: http://designshack.net/articles/css/6-useful-css-button-recipes-you-can-copy-paste/*/
+.button
+{
+	background: -moz-linear-gradient(19% 75% 90deg,#6DB700, #99CF00);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700));
+	background-color: #99CF00;
+	border-bottom: solid 1px #58701b;
+	border-left: solid 1px #c3f83a;
+	border-radius: 10px;
+	border-right: solid 1px #82a528;
+	border-top: solid 1px #c3f83a;
+	color: white;
+	font-size: 20px;
+	height: 23px;
+	line-height: 50px;
+	moz-border-radius: 10px;
+	text-align: center;
+	webkit-border-radius: 10px;
+	width: 100px;
+}
+
+.button h3
+{
+	color: #6B6B6B;
+	text-decoration: none;
+        position: relative;
+        top:-15px;
+        font-size: 14px;
+}
+
+.button p
+{
+	font-family: helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 4px;
+}
+
+.button a
+{
+	color: #6B6B6B;
+	text-decoration: none;
+        position: relative;
+        top:-15px;
+        font-size: 14px;
+}
+
+.button:hover
+{
+	background: -moz-linear-gradient(19% 75% 90deg,#99CF00, #6DB700);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6DB700), to(#99CF00));
+}

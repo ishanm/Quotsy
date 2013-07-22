@@ -1,0 +1,14 @@
+{
+  "name": "Quote Highlighter",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Highlight random quotes you find while surfing, and have a random one show up on opening a new tab.",
+  "permissions": ["contextMenus", "https://www.shopperspoll.com/*", "http://127.0.0.1:8000/*"],
+  "background" : {
+    "page" : "html/background.html"
+  },
+  "chrome_url_overrides" : {
+    "newtab" : "html/quotePage.html"
+  },
+  "content_security_policy": "script-src 'self' http://127.0.0.1:8000 https://www.shopperspoll.com; object-src 'self'"
+}
