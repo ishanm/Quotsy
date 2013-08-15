@@ -1,6 +1,7 @@
 from wsgiref.simple_server import make_server
 from urlparse import parse_qs
 from cgi import FieldStorage
+from Cookie import SimpleCookie
 
 class ServerException(Exception):
     def __init__(self, message):
@@ -9,7 +10,7 @@ class ServerException(Exception):
     def __str__(self):
         return self.message
     
-class Request:
+class Request(object):
     def __init__(self, environ):
         self.environ = environ
         self.method = self.environ['REQUEST_METHOD'].upper()
@@ -18,6 +19,7 @@ class Request:
         self._get = None
         self._post = None
         self._body = None
+        self._cookie = None
 
     @property
     def GET(self):
@@ -66,7 +68,61 @@ class Request:
             return ""
         
         return self.environ['wsgi.input'].read(int(self.environ['CONTENT_LENGTH']))
+    
+    @property
+    def cookie(self):
+        """
+        Returns a dictionary of cookies, without any additional information like
+        the expiry time, secure, version etc. Just the key, value pairs
+        """
+        if 'HTTP_COOKIE' not in self.environ:
+            return {}
+        
+        simpleCookie = SimpleCookie(self.environ['HTTP_COOKIE'])
+        keyVals = [(key, morsel.value) for key, morsel in simpleCookie.items()]
+        return dict(keyVals)
+
+class Response(object):
+    def __init__(self):
+        self.body = None
+        self._cookies = SimpleCookie()
+        self._headers = {}
+    
+    @property
+    def cookies(self):
+        """
+        Returns a SimpleCookie object for the user to manipulate. When the response
+        is being sent, this SimpleCookie will be converted to the appropriate header
+        """
+        return self._cookies
+    
+    def set_cookie(self, key, val, **kargs):
+        """
+        Sets a cookie and it's additional info like path, expires, etc
+        """
+        self.cookies[key] = val
+        for i, j in kargs.items():
+            self.cookies[key][i] = j
             
+    @property
+    def headers(self):
+        """
+        This returns the headers of the response as a dict (exluding the cookies)
+        """
+        return self._headers
+    
+    @headers.setter
+    def headers(self, key, val):
+        self._headers[key] = val
+        
+    def combine_cookies_headers(self):
+        """
+        This method combines the cookies and non-cookie headers and returns
+        the list of tuples to be returned by the WSGI app
+        """
+        cookies = [('Set-Cookie', morsel.OutputString()) for key, morsel in self.cookies.items()]
+        return self.headers.items() + cookies
+    
 viewMap = {}
 
 def addView(path, view):
@@ -75,14 +131,24 @@ def addView(path, view):
 def getView(path):
     return viewMap[path]
 
-def defaultApp(environ, start_response):
-    start_response('200 OK', [('Content-type', 'text/html')])
-    currentPath = environ['PATH_INFO']
-    request = Request(environ)
-    view = getView(currentPath)
-    return view(request)
+class DefaultApp():
+    def __init__(self):
+        self.request = None
+        self.response = None
+        
+    def __call__(self, environ, start_response):
+        self.request = Request(environ)
+
+        currentPath = environ['PATH_INFO']
+        view = getView(currentPath)
+        self.response = view(self.request)
+        
+        start_response('200 OK', self.response.combine_cookies_headers())
+        return self.response.body
+
+
 
 def serve(host='127.0.0.1', port=8080):
-    httpd = make_server(host, port, defaultApp)
+    httpd = make_server(host, port, DefaultApp())
     print "Starting server on host %s, port %d" % (host, port)
     httpd.serve_forever()
