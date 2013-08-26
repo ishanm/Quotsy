@@ -1,7 +1,12 @@
 from wsgiref.simple_server import make_server
 from requestResponse import Request, Response
+from config import config
 
 import constants
+
+# -----------------------------------
+# Exceptions 
+# -----------------------------------
 
 class ServerException(Exception):
     def __init__(self, message):
@@ -10,6 +15,10 @@ class ServerException(Exception):
     def __str__(self):
         return self.message
     
+# -----------------------------------
+# Views 
+# -----------------------------------
+
 viewMap = {}
 
 def addView(path, view):
@@ -17,6 +26,10 @@ def addView(path, view):
     
 def getView(path):
     return viewMap[path]
+
+# -----------------------------------
+# Default app
+# -----------------------------------
 
 class DefaultApp():
     def __init__(self):
@@ -31,6 +44,7 @@ class DefaultApp():
         try:
             self.response = view(self.request)
         except Exception:
+            import pdb; pdb.set_trace()
             self.response = Response()
             self.response.status = 500
             self.response.headers['Content-Type'] = 'text/html'
