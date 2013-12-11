@@ -4,10 +4,15 @@ from jinja2 import Environment, FileSystemLoader, TemplateNotFound as JinjaTempl
 import sys
 import inspect
 import os.path
+import re
 
 renderer = None
 
 def getRenderedTemplate(templateName, context):
+    '''
+    Public method that finds the template renderer class according to the
+    one mentioned in the config file, and uses that to render the given template
+    '''
     global renderer
     if not renderer:
         templateRenderer = config.get('TEMPLATE_RENDERER', 'Basic').title()
@@ -35,10 +40,22 @@ class BaseRenderer(object):
 
 class Basic(BaseRenderer):
     def _loadTemplate(self, templateName):
-        pass
+        import pdb; pdb.set_trace()
+        templateFullPath = os.path.join(self.templatesDir, templateName)
+        try:
+            templateFile = open(templateFullPath, 'r')
+        except IOError:
+            raise TemplateException('Could not find %s template' % templateName)
+
+        self.template = templateFile.read()
+        templateFile.close()
     
     def _renderTemplate(self, context):
-        pass
+        import pdb; pdb.set_trace()
+        result = []
+        pattern = re.compile()
+        #for line in self.template:
+            
     
 class Jinja2(BaseRenderer):
     def __init__(self):

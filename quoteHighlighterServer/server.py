@@ -44,7 +44,6 @@ class DefaultApp():
         try:
             self.response = view(self.request)
         except Exception:
-            import pdb; pdb.set_trace()
             self.response = Response()
             self.response.status = 500
             self.response.headers['Content-Type'] = 'text/html'

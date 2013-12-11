@@ -1,5 +1,7 @@
 body{
-    background-color: #FBF0D9;
+    /*background-color: #FBF0D9;*/
+    background-image: url('/images/background4.jpg');
+    background-size: 100% auto;
 }
 
 #quoteDiv{
@@ -38,6 +40,7 @@ h1{
     /*font-style: italic;*/
     font-family: 'Tangerine', cursive;
     font-size: 2.90em;
+    color: grey;
 }
 
 /* Message bar stuff */
