@@ -48,3 +48,10 @@ body {
     width: 220px;
     display: none;
 }
+
+#errorMessage{
+    margin-top: 10px;
+    margin-left: 1px;
+    color: red;
+    display: none;
+}
