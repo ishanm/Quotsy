@@ -1,7 +1,7 @@
 <html>
     <head>
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="/css/login.css">
     </head>
     <body>
@@ -9,8 +9,11 @@
     
           <form class="form-signin" id="loginForm" role="form">
             <h2 class="form-signin-heading">Sign In</h2>
+            
             <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            <div id="errorMessage"></div>
+            
             <button class="btn btn-lg btn-primary btn-block" id="loginFormSubmit" type="button">Sign in</button>
             <div id="loadingIndicatorDiv"><img src="/images/ajax-loader.gif" id="loadingIndicator"/></div>
           </form>
@@ -19,7 +22,8 @@
 
         <!-- JS -->
         <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/config.js"></script>
         <script type="text/javascript" src="/js/quoteManager.js"></script>
         <script type="text/javascript" src="/js/login.js"></script>
     </body>

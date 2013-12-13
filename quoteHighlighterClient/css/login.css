@@ -39,10 +39,21 @@ body {
   border-top-right-radius: 0;
 }
 
+#loginFormSubmit{
+    margin-top: 12px;
+}
+
 #loadingIndicatorDiv{
     position: relative;
     top: 10px;
     width: 220px;
     margin:0 auto;
+    display: none;
+}
+
+#errorMessage{
+    margin-top: 10px;
+    margin-left: 1px;
+    color: red;
     display: none;
 }

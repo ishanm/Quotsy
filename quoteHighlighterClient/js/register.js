@@ -1,47 +1,49 @@
 $(document).ready(function(){
     $("#registerFormSubmit").click(function(event){
+        // Clear any validation errors shown from previous failed attempt
         hideErrorMsg();
         showBusy();
 
-        var validationResult = validateUserInput();
-        if (!validationResult){
+        var validationPassed = validateUserInput();
+        if (!validationPassed){
             return;
         }
         
         // If validation passes go ahead with registration
-        $.post("http://127.0.0.1:8000/accounts/login/", $('#registerForm').serialize(), function(data){
+        $.post(Config.host + "accounts/login/", $('#registerForm').serialize(), function(data){
             localStorage['loginStatus'] = data.loginStatus;
             QuoteManager.syncQuotesIfLoggedIn();
             hideBusy();
-
         });
     });
     
     // Basic user input validation. If any errors, show error message and return false. Else return true
     function validateUserInput(){
+        var validationPassed = true;
+        
         if ($('#username').val() == ''){
             showErrorMsg("Please enter a value for the username and try again.");
-            hideBusy();
-            return false;
+            validationPassed = false;
         }
-        if ($('#password').val() == ''){
+        else if ($('#password').val() == ''){
             showErrorMsg("Please enter a value for the password and try again.");
-            hideBusy();
-            return false;
+            validationPassed = false;
         }
-        if ($('#confirmPassword').val() == ''){
+        else if ($('#confirmPassword').val() == ''){
             showErrorMsg("Please enter a value for the confirm password and try again.");
-            hideBusy();
-            return false;
+            validationPassed = false;
         }
         
-        if ($('#password').val() != $('#confirmPassword').val()){
+        else if ($('#password').val() != $('#confirmPassword').val()){
             showErrorMsg("The passwords don't match. Please fix it and try again.");
-            hideBusy();
-            return false;
+            validationPassed = false;
         }
         
-        return true;
+        if (!validationPassed){
+            // Clear the busy sign so we can show error message
+            hideBusy();
+        }
+        return validationPassed;
     }
     
     // Show busy symbol + disable submit button
