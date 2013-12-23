@@ -14,6 +14,9 @@ $(document).ready(function(){
             localStorage['loginStatus'] = data.loginStatus;
             QuoteManager.syncQuotesIfLoggedIn();
             hideBusy();
+        }).fail(function(){
+            showErrorMsg("Oh snap! Something broke! Please try again in a bit.");
+            hideBusy();
         });
     });
     

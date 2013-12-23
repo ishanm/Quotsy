@@ -1,28 +1,67 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>All Quotes</title>
-    
-    <link href="/css/showAllQuotes.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Miss+Fajardose' rel='stylesheet' type='text/css'>
-    
-    <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.autoellipsis-1.0.10.min.js"></script>
-    <script type="text/javascript" src="/js/showAllQuotes.js"></script>
+<html ng-app="allQuotes" ng-csp>
+    <head>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/showAllQuotes.css">
+        <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/config.js"></script>
+        <script type="text/javascript" src="/js/quoteManager.js"></script>
+        <script type="text/javascript" src="/js/login.js"></script>
+        <script src=" https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+        <script type="text/javascript" src="/js/controllers.js"></script>
+    </head>
+    <body ng-controller="AllQuotesController">
 
-   
-  </head>
-  
-  <body>
-    
-    <div id="banner">"My Quotes"</div>
-    <div class="bigContainer">
-      
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
-        
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">All Quotes</a></li>
+            <li><a href="#add">Add Quote</a></li>
+            <li><a href="#settings">Settings</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/">Logout</a></li>
+          </ul>
+        </div>
       </div>
-    
     </div>
-  </body>
+
+    <div class="container">
+
+      <div class="jumbotron">
+   <!--     <span id="firstLetter">Y</span>ou only live once, but if you do it right, once is enough.
+        <p style="float:right; font-family: 'Arial'; color: grey; font-size: 80%;">-Mae West</p>-->
+        <img src="/images/Quote1.png">
+      </div>
+    </div> 
+    
+    <div class="container">
+      <table class="table table-striped">
+        <tr ng-repeat="quote in quotes">
+          <td class="glyphicon glyphicon-leaf" style="color: grey;"></td>
+          <td>{{quote.text}}</td>
+          <td id="editTd"><button type="button" class="btn btn-link" ng-click="saveQuotes($event)"><span class="glyphicon glyphicon-pencil"></span></button></td>
+          <td id="deleteTd"><button type="button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button></td>
+        </tr>
+      </table>
+    </div>
+
+    
+    
+        <!-- JS -->
+
+    </body>
 </html>
+

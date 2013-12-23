@@ -10,5 +10,5 @@
   "chrome_url_overrides" : {
     "newtab" : "html/quotePage.html"
   },
-  "content_security_policy": "script-src 'self' http://127.0.0.1:8000 https://www.shopperspoll.com; object-src 'self'"
+  "content_security_policy": "script-src 'self' http://127.0.0.1:8000 https://www.shopperspoll.com https://ajax.googleapis.com; object-src 'self'"
 }
