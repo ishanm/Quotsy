@@ -1,6 +1,6 @@
 body{
     /*background-color: #FBF0D9;*/
-    background-image: url('/images/background4.jpg');
+    background-image: url('/images/background3.jpg');
     background-size: 100% auto;
 }
 
@@ -40,7 +40,7 @@ h1{
     /*font-style: italic;*/
     font-family: 'Tangerine', cursive;
     font-size: 2.90em;
-    color: grey;
+    color: black;
 }
 
 /* Message bar stuff */

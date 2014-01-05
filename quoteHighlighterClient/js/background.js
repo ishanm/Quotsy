@@ -7,9 +7,6 @@ var DEFAULT_ITEM = {
     'url' : 'http://bookriot.com/2012/02/06/sixteen-things-calvin-and-hobbes-said-better-than-anyone-else/'
 };
 
-//var SERVER_ADDRESS = 'https://www.shopperspoll.com'
-var SERVER_ADDRESS = "http://127.0.0.1:8000";
-
 window.onload = main;
 
 /************************************************************************/
@@ -19,11 +16,15 @@ window.onload = main;
 // Initialize the values we'll need in localStorage if they don't already exist
 function initLocalStorage(){
     if (!localStorage.hasOwnProperty('closeLoginWarning')){
-        localStorage['closeLoginWarning'] = JSON.stringify(false);
+        localStorage['closeLoginWarning'] = false;
     }
     
     if (!localStorage.hasOwnProperty('list')){
         localStorage['list'] = JSON.stringify([DEFAULT_ITEM]);
+    }
+    
+    if (!localStorage.hasOwnProperty('loginStatus')){
+        localStorage['loginStatus'] = false;
     }
 }
 

@@ -12,6 +12,11 @@ body {
   font-size:250%
 }
 
+.noBorder{
+  outline:0px !important;
+  -webkit-appearance:none;
+}
+
 #firstLetter{
   font-family: 'Great Vibes', cursive;
   font-size:300%
@@ -27,4 +32,24 @@ body {
   width: 40px;
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.saveEdits{
+  color: #7a3aa4;
+}
+
+.alert {
+  padding: 8px 10px;
+}
+
+.alert-info {
+  background-image: -webkit-linear-gradient(top, #F9F9F9 0%, #F9F9F9 100%);
+  background-image: linear-gradient(to bottom, #F9F9F9 0%, #F9F9F9 100%);
+  background-repeat: repeat-x;
+  border-color: #F9F9F9;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9edf7', endColorstr='#ffb9def0', GradientType=0);
+}
+
+#closeButton{
+  margin-right: 25px;
 }

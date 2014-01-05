@@ -6,24 +6,30 @@ QuoteManager = function(){
     
     /*
      * If the user is logged in, gets the list of quotes from the server for
-     * the user and puts them in localStorage for quick access.
+     * the user and puts them in localStorage for quick access. Also updates
+     * the server collection with whatever was on localStorage before the user
+     * logged in
      * 
      * Format of the list of all quotes stored in localStorage['list']:
      * [
      *  {
+     *      'id':1,
      *      'text':'Sample quote 1 yo',
      *      'url':'http://sampleURL1.com' 
      *  },
      *  {
+     *      'id':2,
      *      'text':'Sample quote 2 yo',
      *      'url':'http://sampleURL2.com' 
      *  },
      * ]
      */
-    function syncQuotesIfLoggedIn(){
-        if (localStorage['loginStatus'] == true){
-            $.getJSON(SERVER_ADDRESS + '/quotes/getAll/', function(result){
+    function syncQuotesIfLoggedIn(successcb){
+        if (JSON.parse(localStorage['loginStatus']) == true){
+            // Update the server copy with the quotes in localstorage
+            $.getJSON(Config.host + '/quotes/getAll/', function(result){
                 localStorage['list'] = JSON.stringify(result);
+                successcb();
             });
         }
     }
@@ -46,7 +52,7 @@ QuoteManager = function(){
         item['text'] = info.selectionText;
         item['url'] = info.pageUrl;
         if (JSON.parse(localStorage['loginStatus'])){
-            $.post(SERVER_ADDRESS + '/quotes/add/', item, function(data){
+            $.post(Config.host + '/quotes/add/', item, function(data){
                 if (!data.responseSuccess){
                     //TODO: Open a new tab/some other way of showing that the add wasn't successful
                 }

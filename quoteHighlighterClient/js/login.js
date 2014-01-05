@@ -11,8 +11,9 @@ $(document).ready(function(){
         
         $.post(Config.host + "/accounts/login/", $('#loginForm').serialize(), function(data){
             localStorage['loginStatus'] = data.loginStatus;
-            QuoteManager.syncQuotesIfLoggedIn();
-            hideBusy();
+            QuoteManager.syncQuotesIfLoggedIn(function(){
+                window.location.replace("/html/showAllQuotes.html");
+            });
         }).fail(function(){
             showErrorMsg("Oh snap! Something broke! Please try again in a bit.");
             hideBusy();

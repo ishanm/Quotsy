@@ -1,7 +1,7 @@
 <html ng-app="allQuotes" ng-csp>
     <head>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.css">
         <link rel="stylesheet" href="/css/showAllQuotes.css">
         <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
@@ -32,14 +32,20 @@
             <li><a href="#settings">Settings</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Logout</a></li>
+            <li><a href="" ng-click="loginHandler();">{{loginText}}</a></li>
           </ul>
         </div>
       </div>
+      
     </div>
 
+      
     <div class="container">
-
+      <div class="alert alert-info alert-dismissable" ng-show="!loggedIn">
+        <button type="button" id="closeButton" class="close">&times;</button>
+        You are logged out. You risk losing your quotes if you're not signed in
+      </div>
+      
       <div class="jumbotron">
    <!--     <span id="firstLetter">Y</span>ou only live once, but if you do it right, once is enough.
         <p style="float:right; font-family: 'Arial'; color: grey; font-size: 80%;">-Mae West</p>-->
@@ -51,16 +57,26 @@
       <table class="table table-striped">
         <tr ng-repeat="quote in quotes">
           <td class="glyphicon glyphicon-leaf" style="color: grey;"></td>
-          <td>{{quote.text}}</td>
-          <td id="editTd"><button type="button" class="btn btn-link" ng-click="saveQuotes($event)"><span class="glyphicon glyphicon-pencil"></span></button></td>
-          <td id="deleteTd"><button type="button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button></td>
+          <td id="quoteText{{$index}}" ng-show="isEditModeOff($index);">{{quote.text}}</td>
+          
+          <td ng-show="!isEditModeOff($index);">
+            <input type="text" ng-model="quote.text" on-enter="editQuote($index)" style="width:100%;"/>
+          </td>
+
+          <td id="editTd">
+            <button type="button" class="btn btn-link noBorder" ng-click="editQuote($index)">
+              <span ng-class="editButtonCss($index);"></span>
+            </button>
+          </td>
+
+          <td id="deleteTd">
+            <button type="button" ng-class="deleteButtonCss($index);" ng-click="deleteQuote($index)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </td>
         </tr>
       </table>
     </div>
-
-    
-    
-        <!-- JS -->
 
     </body>
 </html>
