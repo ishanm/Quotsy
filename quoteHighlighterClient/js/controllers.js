@@ -8,15 +8,11 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   /************************************************************************/
   /* Variables                                                            */
   /************************************************************************/
-  
-  var DEFAULT_ITEM = {
-      'text' : "It's a magical world, Hobbes, ol' buddy...Let's go exploring!",
-      'url' : 'http://bookriot.com/2012/02/06/sixteen-things-calvin-and-hobbes-said-better-than-anyone-else/'
-  };
 
   // List of all quotes
   $scope.quotes = JSON.parse(localStorage['list']);
   $scope.loggedIn = JSON.parse(localStorage['loginStatus']);
+  $scope.closeLoginWarning = JSON.parse(localStorage['closeLoginWarning']);
   $scope.loginText = $scope.loggedIn == true ? "Logout" : "Login";
   
   // Map of whether to show the input text field in place of the quote text
@@ -27,12 +23,16 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   /* Functions                                                            */
   /************************************************************************/
   
+  // Show 'Login' or 'Logout' in the navbar according to the login status.
+  // For the logout logic, reset all the localstorage values. For the login
+  // logic redirect to login page
   $scope.loginHandler = function(){
     if ($scope.loggedIn){
       $http.post(Config.host + '/accounts/logout/', {}).success(function(data, status, headers, config){
         if (data.loginStatus == false){
           localStorage['closeLoginWarning'] = false;
-          localStorage['list'] = JSON.stringify([DEFAULT_ITEM]);
+          $scope.closeLoginWarning = JSON.parse(localStorage['closeLoginWarning']);
+          localStorage['list'] = JSON.stringify([]);
           $scope.quotes = JSON.parse(localStorage['list']);
           localStorage['loginStatus'] = false;
           $scope.loggedIn = JSON.parse(localStorage['loginStatus']);
@@ -43,6 +43,22 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
     else{
       window.location.replace("/html/login.html");
     }
+  }
+  
+  $scope.hideLoginStatusWarning = function(){
+    $scope.closeLoginWarning = localStorage['closeLoginWarning'] = true;
+  }
+
+  // Adds a quote by prepending an empty quote to the list, and setting
+  // the edit mode status of the new row as true after disabling all the
+  // other rows that were being edited
+  $scope.addQuote = function(){
+    $scope.quotes.unshift({'text':'', 'url':''});
+    localStorage['list'] = JSON.stringify($scope.quotes);
+    for (var key in editingMode){
+      editingMode[key] = false;
+    }
+    editingMode[0] = true;
   }
   
   // Sets edit mode as true if the row isn't on edit mode.
@@ -88,6 +104,10 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
     if (!$scope.isEditModeOff(index))
       css += " disabled";
     return css;
+  }
+  
+  $scope.isEmptyListMessage = function(){
+    return $scope.quotes.length == 0;
   }
 }]);
 

@@ -7,4 +7,11 @@ config = {
     # template engine that fills in a template with the dictionary provided, but does
     # not provide any of the other functionality template engines out there provide
     'TEMPLATE_RENDERER' : 'Basic',
+    
+    'DATABASE' : {
+        'HOST' : 'localhost',
+        'NAME' : 'quotsy',
+        'USER_NAME' : 'postgres',
+        'PASSWORD' : 'postgre'
+    }
 }

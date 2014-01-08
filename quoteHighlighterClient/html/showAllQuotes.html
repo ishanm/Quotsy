@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="/css/bootstrap-theme.css">
         <link rel="stylesheet" href="/css/showAllQuotes.css">
         <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Engagement' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/js/config.js"></script>
@@ -28,7 +29,6 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">All Quotes</a></li>
-            <li><a href="#add">Add Quote</a></li>
             <li><a href="#settings">Settings</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -41,8 +41,8 @@
 
       
     <div class="container">
-      <div class="alert alert-info alert-dismissable" ng-show="!loggedIn">
-        <button type="button" id="closeButton" class="close">&times;</button>
+      <div class="alert alert-info alert-dismissable" ng-show="!loggedIn && !closeLoginWarning">
+        <button type="button" id="closeButton" class="close" ng-click="hideLoginStatusWarning();">&times;</button>
         You are logged out. You risk losing your quotes if you're not signed in
       </div>
       
@@ -54,13 +54,18 @@
     </div> 
     
     <div class="container">
+      <div>
+        <button id="addQuoteIcon" class="noBorder" ng-click="addQuote();"></button>
+        <input id="searchQuotes" type="text" class="form-control" placeholder="Search for a quote" ng-model="query">
+      </div>
+      
       <table class="table table-striped">
-        <tr ng-repeat="quote in quotes">
+        <tr ng-repeat="quote in quotes | filter:query">
           <td class="glyphicon glyphicon-leaf" style="color: grey;"></td>
           <td id="quoteText{{$index}}" ng-show="isEditModeOff($index);">{{quote.text}}</td>
           
           <td ng-show="!isEditModeOff($index);">
-            <input type="text" ng-model="quote.text" on-enter="editQuote($index)" style="width:100%;"/>
+            <input type="text" ng-model="quote.text" on-enter="editQuote($index)" placeholder=" Enter your quote here" style="width:100%;"/>
           </td>
 
           <td id="editTd">
@@ -76,6 +81,8 @@
           </td>
         </tr>
       </table>
+      
+      <p id="emptyListMessage" ng-show="isEmptyListMessage();">You haven't added any quotes as yet. Select a chunk of text while browsing, right click and click on 'Add to Quotsy' to add a quote. Or click on the + sign above to enter one.</p>
     </div>
 
     </body>

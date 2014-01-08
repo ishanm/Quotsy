@@ -53,3 +53,57 @@ body {
 #closeButton{
   margin-right: 25px;
 }
+
+#emptyListMessage{
+  color: #31708f;
+  margin-top: 50px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.form-control:-moz-placeholder {
+  color: #b5b5b5;
+}
+
+.form-control::-moz-placeholder {
+  color: #b5b5b5;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #b5b5b5;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #b5b5b5;
+}
+
+.glyphicon-trash{
+  width:50%;
+  height: 50%;
+}
+
+#searchQuotes{
+  float: right;
+  width:200px;
+  height: 30px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+#addQuoteIcon{
+  background: url('/images/addIcon.png');
+  margin-top: -12px;
+  margin-left: 10px;
+  height: 24px;
+  width: 24px;
+  border: none;
+  opacity:0.45;
+  filter:alpha(opacity=40);
+}
+
+#addQuoteIcon:hover{
+  background: url('/images/addIcon.png');
+  opacity:1.0;
+  filter:alpha(opacity=100); 
+}
