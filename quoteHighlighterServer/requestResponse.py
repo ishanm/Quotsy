@@ -2,6 +2,8 @@ from urlparse import parse_qs
 from cgi import FieldStorage
 from Cookie import SimpleCookie
 
+import exceptions
+
 class Request(object):
     def __init__(self, environ):
         self.environ = environ
@@ -37,19 +39,20 @@ class Request(object):
         """
         
         if self.method != "POST":
-            raise ServerException("Request method was not POST")
+            raise exceptions.ServerException("Request method was not POST")
 
-        self.POST = {}
-        fs = FieldStorage(fp=self.environ['wsgi.input'], environ=self.environ)
-
-        for key in fs.keys():
-            val = fs[key]
-            if type(val) == list:
-                self.POST[key] = [i.value for i in val]
-            else:
-                self.POST[key] = val.value
+        if self._post is None:
+            self._post = {}
+            fs = FieldStorage(fp=self.environ['wsgi.input'], environ=self.environ)
+    
+            for key in fs.keys():
+                val = fs[key]
+                if type(val) == list:
+                    self._post[key] = [i.value for i in val]
+                else:
+                    self._post[key] = val.value
         
-        return self.POST
+        return self._post
                     
     @property
     def body(self):

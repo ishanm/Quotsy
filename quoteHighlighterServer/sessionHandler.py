@@ -20,6 +20,13 @@ class SessionHandler(object):
         with self._get_session(sid) as session:
             return session[key]
         
+    def add_val(self, sid, key, val):
+        '''
+        Given a sid and key and val, adds it to the session file
+        '''
+        with self._get_session(sid) as session:
+            session[key] = val
+        
     def create_session(self, key, val):
         '''
         Creates a shelved file and adds the given key, val pair to it.

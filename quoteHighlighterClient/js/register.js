@@ -9,9 +9,19 @@ $(document).ready(function(){
             return;
         }
         
+        var registerUrl = Config.host.replace(/\/$/, "") + "/accounts/register/";
         // If validation passes go ahead with registration
-        $.post(Config.host + "accounts/login/", $('#registerForm').serialize(), function(data){
-            localStorage['loginStatus'] = data.loginStatus;
+        $.post(registerUrl, $('#registerForm').serialize(), function(data){
+            if (!data.isSuccess){
+                showErrorMsg(data.errorMsg);
+                hideBusy();
+                return;
+            }
+            localStorage['loginStatus'] = true;
+            localStorage['sid'] = data.sid;
+            
+            // The user might have registered after he already has a collection on
+            // localStorage. Need to save those on the server, so call sync
             QuoteManager.syncQuotesIfLoggedIn(function(){
                 window.location.replace("/html/showAllQuotes.html");
             });

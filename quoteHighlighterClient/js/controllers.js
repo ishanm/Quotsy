@@ -28,7 +28,10 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   // logic redirect to login page
   $scope.loginHandler = function(){
     if ($scope.loggedIn){
-      $http.post(Config.host + '/accounts/logout/', {}).success(function(data, status, headers, config){
+      // Remove trailing forward slash
+      var logoutUrl = Config.host.replace(/\/$/, "") + "/accounts/logout/";
+        
+      $http.post(logoutUrl, {}).success(function(data, status, headers, config){
         if (data.loginStatus == false){
           localStorage['closeLoginWarning'] = false;
           $scope.closeLoginWarning = JSON.parse(localStorage['closeLoginWarning']);

@@ -26,8 +26,13 @@ QuoteManager = function(){
      */
     function syncQuotesIfLoggedIn(successcb){
         if (JSON.parse(localStorage['loginStatus']) == true){
+            var syncUrl = Config.host.replace(/\/$/, "") + "/quotes/sync/";
+      
             // Update the server copy with the quotes in localstorage
-            $.getJSON(Config.host + '/quotes/getAll/', function(result){
+            $.post(syncUrl, {
+                sid : localStorage['sid'],
+                quotes : localStorage['list']
+                }, function(result){
                 localStorage['list'] = JSON.stringify(result);
                 successcb();
             });
@@ -52,7 +57,10 @@ QuoteManager = function(){
         item['text'] = info.selectionText;
         item['url'] = info.pageUrl;
         if (JSON.parse(localStorage['loginStatus'])){
-            $.post(Config.host + '/quotes/add/', item, function(data){
+            // Remove trailing forward slash
+            var addUrl = Config.host.replace(/\/$/, "") + "/quotes/add/";
+      
+            $.post(addUrl, item, function(data){
                 if (!data.responseSuccess){
                     //TODO: Open a new tab/some other way of showing that the add wasn't successful
                 }

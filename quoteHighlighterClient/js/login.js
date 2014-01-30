@@ -9,8 +9,18 @@ $(document).ready(function(){
             return;
         }
         
-        $.post(Config.host + "/accounts/login/", $('#loginForm').serialize(), function(data){
-            localStorage['loginStatus'] = data.loginStatus;
+        // Remove trailing forward slash
+        var loginUrl = Config.host.replace(/\/$/, "") + "/accounts/login/";
+        
+        $.post(loginUrl , $('#loginForm').serialize(), function(data){
+            if (!data.isSuccess){
+                showErrorMsg(data.errorMsg);
+                hideBusy();
+                return;
+            }
+            localStorage['loginStatus'] = true;
+            localStorage['sid'] = data.sid;
+
             QuoteManager.syncQuotesIfLoggedIn(function(){
                 window.location.replace("/html/showAllQuotes.html");
             });

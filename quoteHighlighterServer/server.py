@@ -2,18 +2,8 @@ from wsgiref.simple_server import make_server
 from requestResponse import Request, Response
 from config import config
 
+import exceptions
 import constants
-
-# -----------------------------------
-# Exceptions 
-# -----------------------------------
-
-class ServerException(Exception):
-    def __init__(self, message):
-        self.message = message
-        
-    def __str__(self):
-        return self.message
     
 # -----------------------------------
 # Views 
@@ -21,11 +11,17 @@ class ServerException(Exception):
 
 viewMap = {}
 
-def addView(path, view):
+def add_view(path, view):
+    path = path.rstrip('/')
     viewMap[path] = view
     
-def getView(path):
-    return viewMap[path]
+def get_view(path):
+    path = path.rstrip('/')
+    try:
+        view = viewMap[path]
+    except KeyError:
+        raise exceptions.ServerException('No view exists mapped to the path %s' % path)
+    return view
 
 # -----------------------------------
 # Default app
@@ -40,7 +36,7 @@ class DefaultApp():
         self.request = Request(environ)
 
         currentPath = environ['PATH_INFO']
-        view = getView(currentPath)
+        view = get_view(currentPath)
         try:
             self.response = view(self.request)
         except Exception:

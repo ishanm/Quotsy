@@ -1,7 +1,7 @@
-from config import config
-
+import config
 import psycopg2
 import contextlib
+import exceptions
 
 class DbException(Exception):
     def __init__(self, msg):
@@ -17,13 +17,13 @@ class PostgresqlHandler(object):
     '''
     def __init__(self):
         try:
-            db_settings = config['DATABASE']
+            db_settings = config.config['DATABASE']
             self.host = db_settings['HOST']
             self.db_name = db_settings['NAME']
             self.user_name = db_settings['USER_NAME']
             self.password = db_settings['PASSWORD']
         except KeyError:
-            raise DbException('There is an error in your database settings.')
+            raise exceptions.ConfigException('DATABASE')
 
         self.connection = None
         
@@ -40,13 +40,14 @@ class PostgresqlHandler(object):
             raise DbException("There was an error rolling back the transcation.")
         
     @contextlib.contextmanager
-    def _cursor(self):
+    def cursor(self):
         if not self.connection or self.connection.closed:
             self._get_connection()
         
         try:
             yield self.connection.cursor()
-        except:
+        except Exception, e:
+            print e
             if not self.connection.closed:
                 self._rollback()
             raise DbException("There was an error running the query.")
@@ -55,19 +56,19 @@ class PostgresqlHandler(object):
                 raise DbException("Cannot commit because the db connection is closed")
             self.connection.commit()
             
-    def get_rows(self, query):
+    def get_rows(self, query, *args, **kwargs):
         '''
         Runs the given query and returns the result rows as a list of tuples
         '''
-        with self._cursor() as cursor:
-            cursor.execute(query)
+        with self.cursor() as cursor:
+            cursor.execute(query, *args, **kwargs)
             return cursor.fetchall()
         
-    def execute(self, query):
+    def execute(self, query, *args, **kwargs):
         '''
         Exceutes the given query and returns the number of rows inserted/updated
         '''
-        with self._cursor() as cursor:
-            cursor.execute(query)
+        with self.cursor() as cursor:
+            cursor.execute(query, *args, **kwargs)
             return cursor.rowcount
         

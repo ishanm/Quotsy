@@ -13,5 +13,7 @@ config = {
         'NAME' : 'quotsy',
         'USER_NAME' : 'postgres',
         'PASSWORD' : 'postgre'
-    }
+    },
+        
+    'SESSION_DIR' : '/Users/ishanmandhan/quoteHighlighter/quoteHighlighterServer/quotsy/session'
 }
