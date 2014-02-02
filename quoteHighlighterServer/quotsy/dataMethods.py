@@ -60,5 +60,9 @@ def get_all_quotes(account_id):
     all_quotes = db.get_rows(get_all_quotes_query, (account_id,))
     
     return all_quotes
+
+def update_quote(quote_id, quote_text):
+    update_query = "UPDATE quotes SET text = %s WHERE id = %s;"
+    row_count = db.execute(update_query, (quote_text, quote_id))
     
     

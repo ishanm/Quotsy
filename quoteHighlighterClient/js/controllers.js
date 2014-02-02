@@ -33,12 +33,9 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
         
       $http.post(logoutUrl, {}).success(function(data, status, headers, config){
         if (data.loginStatus == false){
-          localStorage['closeLoginWarning'] = false;
-          $scope.closeLoginWarning = JSON.parse(localStorage['closeLoginWarning']);
-          localStorage['list'] = JSON.stringify([]);
-          $scope.quotes = JSON.parse(localStorage['list']);
-          localStorage['loginStatus'] = false;
-          $scope.loggedIn = JSON.parse(localStorage['loginStatus']);
+          $scope.closeLoginWarning = false;
+          $scope.quotes = [];
+          $scope.loggedIn = false;
           $scope.loginText = "Login"; 
         }
       })
@@ -57,7 +54,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   // other rows that were being edited
   $scope.addQuote = function(){
     $scope.quotes.unshift({'text':'', 'url':''});
-    localStorage['list'] = JSON.stringify($scope.quotes);
+    //localStorage['list'] = JSON.stringify($scope.quotes);
     for (var key in editingMode){
       editingMode[key] = false;
     }
@@ -68,12 +65,27 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   // If it is, it updates the quote on localStorage and the server
   // if the user is logged in
   $scope.editQuote = function(index){
+    console.log('got into the editQuote method');
     if ($scope.isEditModeOff(index)){
       editingMode[index] = true;
     }
     else{
       editingMode[index] = false;
-      localStorage['list'] = JSON.stringify($scope.quotes);
+      if ($scope.loggedIn && $scope.quotes[index].hasOwnProperty('id')){
+        var update_url = Config.host.replace(/\/$/, "") + "/quotes/update/";
+        var data = $.param({
+          sid:localStorage['sid'],
+          quote_text:$scope.quotes[index].text,
+          quote_id:$scope.quotes[index].id
+        });
+        var config = {
+          headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+        }
+        
+        $http.post(update_url, data, config).success(function(data, status, headers, config){
+          console.log('Updated the quote successfully');
+        })
+      }
     }
     
   }
@@ -112,6 +124,22 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   $scope.isEmptyListMessage = function(){
     return $scope.quotes.length == 0;
   }
+  
+  // Watchers to keep the localStorage in sync with angular models
+  $scope.$watch('quotes', function(newVal, oldVal){
+    localStorage['list'] = JSON.stringify($scope.quotes);
+  }, true)
+  
+  $scope.$watch('loggedIn', function(newVal, oldVal){
+    localStorage['loginStatus'] = JSON.stringify($scope.loggedIn);
+  }, true)
+  
+  $scope.$watch('closeLoginWarning', function(newVal, oldVal){
+    localStorage['closeLoginWarning'] = JSON.stringify($scope.closeLoginWarning);
+  }, true)
+  
+
+  
 }]);
 
 // Directive to run the function provided in 'on-enter' attribute in html

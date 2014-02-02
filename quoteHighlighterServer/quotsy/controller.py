@@ -57,7 +57,6 @@ def login(request):
 
 @utils.json_response
 def sync_quotes(request):
-    import pdb; pdb.set_trace()
     sid = request.POST.get('sid')
     all_quotes = json.loads(request.POST.get('quotes'))
     
@@ -78,11 +77,23 @@ def sync_quotes(request):
     return_val = [{'id':q[0], 'text':q[1], 'url':q[2]} for q in all_quotes]
 
     return return_val
+
+@utils.json_response
+def update_quote(request):
+    import pdb; pdb.set_trace()
+    sid = request.POST.get('sid')
+    quote_id = json.loads(request.POST.get('quote_id'))
+    quote_text = request.POST.get('quote_text')
     
+    if not sid:
+        raise QuotsyException("Sync quotes can only be called with a valid session id")
+    
+    dataMethods.update_quote(quote_id, quote_text)
 
 server.add_view('/accounts/register', register)
 server.add_view('/accounts/login', login)
 server.add_view('/quotes/sync', sync_quotes)
+server.add_view('/quotes/update', update_quote)
 
 server.serve()
 
