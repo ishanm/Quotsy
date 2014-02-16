@@ -2,8 +2,11 @@
     <head>
         <title>Quote</title>
         <link rel="stylesheet" type="text/css" href="/css/quotePage.css"/>
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.css">
         
         <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/js/jquery.autoellipsis-1.0.10.min.js"></script>
         <script type="text/javascript" src="/js/quoteManager.js"></script>
         <script type="text/javascript" src="/js/quotePage.js"></script>
@@ -14,22 +17,22 @@
         <div class="warning">
             <img id="warningImage" src="/images/warning.png"/>
             <div id="warningText">You aren't logged in right now. Logging in will backup your quotes so you never lose them!</div>
-            
-            <button id="loginButton" class="button"><a href="/html/login.html">Login</a></button>
-            <button id="registerButton" class="button"><a href="/html/register.html">Register</a></button>
+            <a id="loginButton" href="/html/login.html" class="btn btn-danger btn-xs">Login</a>
+            <!--<button id="loginButton" class="button"><a href="/html/login.html">Login</a></button>-->
+            <a id="registerButton" href="/html/register.html" class="btn btn-primary btn-xs">Register</a>
             
             <a id="closeButton" href="#"></a>
         </div>
         
         <div id="quoteDiv">
-            <h1 id="actualQuote"></h1>
+            <div id="actualQuote"></div>
         </div>
         
         
             <!--TEMPORARY CLEAR CACHE BUTTON-->
             <!--<button id="clearCache" class="button" style="position: absolute; top: 20px"></button>-->
-        <a id="settingsButton" href="/html/showAllQuotes.html"></a>
-        
-        
+        <!--<a id="settingsButton" href="/html/showAllQuotes.html"></a>-->
+        <a href="/html/showAllQuotes.html" id="listButton"></a>
+        <button id="refreshButton"></button>
     </body>
 </html>

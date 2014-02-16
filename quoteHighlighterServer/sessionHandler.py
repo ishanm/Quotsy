@@ -38,6 +38,15 @@ class SessionHandler(object):
         with self._get_session(sid) as session:
             session[key] = val
             return sid
+        
+    def delete_session_file(self, sid):
+        '''
+        Given a sid, deletes the corresponding session file
+        '''
+        try:
+            os.remove(os.path.join(self.session_dir, sid))
+        except OSError:
+            pass
     
     @contextlib.contextmanager
     def _get_session(self, sid):
@@ -50,3 +59,4 @@ class SessionHandler(object):
             yield shelved_file
         finally:
             shelved_file.close()
+            

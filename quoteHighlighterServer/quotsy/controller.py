@@ -13,7 +13,6 @@ class QuotsyException(Exception):
 
 @utils.json_response
 def register(request):
-    import pdb; pdb.set_trace()
     username = request.POST['username']
     password = request.POST['password']
     account = dataMethods.create_account_if_non_existant(username, password)
@@ -80,7 +79,6 @@ def sync_quotes(request):
 
 @utils.json_response
 def update_quote(request):
-    import pdb; pdb.set_trace()
     sid = request.POST.get('sid')
     quote_id = json.loads(request.POST.get('quote_id'))
     quote_text = request.POST.get('quote_text')
@@ -89,11 +87,42 @@ def update_quote(request):
         raise QuotsyException("Sync quotes can only be called with a valid session id")
     
     dataMethods.update_quote(quote_id, quote_text)
+    
+@utils.json_response
+def add_quote(request):
+    sid = request.POST.get('sid')
+    quote_text = request.POST.get('quote_text')
+    url = request.POST.get('quote_url', None)
+    
+    session_manager = sessionHandler.SessionHandler()
+    account_id = session_manager.get_val(sid, 'account_id')
+    
+    quote_id = dataMethods.add_quote(account_id, quote_text, url)
+    
+    return {'quote_id' : quote_id}
+
+@utils.json_response
+def delete_quote(request):
+    sid = request.POST.get('sid')
+    quote_id = request.POST.get('quote_id')
+    
+    dataMethods.delete_quote(quote_id)
+
+@utils.json_response
+def logout(request):
+    sid = request.POST.get('sid')
+    
+    session_manager = sessionHandler.SessionHandler()
+    session_manager.delete_session_file(sid)
+    
 
 server.add_view('/accounts/register', register)
 server.add_view('/accounts/login', login)
+server.add_view('/accounts/logout', logout)
 server.add_view('/quotes/sync', sync_quotes)
+server.add_view('/quotes/add', add_quote)
 server.add_view('/quotes/update', update_quote)
+server.add_view('/quotes/delete', delete_quote)
 
 server.serve()
 

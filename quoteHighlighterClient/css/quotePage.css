@@ -4,6 +4,10 @@ body{
     background-size: 100% auto;
 }
 
+*:focus {
+    outline: 0;
+}
+
 #quoteDiv{
     position: relative;
     text-align: center;
@@ -14,37 +18,49 @@ body{
     left: 15%;
 }
 
+#listButton{
+  background: url('/images/list.png');
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  border: none;
+  bottom: 23px;
+  left: 20px;
+  opacity:0.65;
+  filter:alpha(opacity=65);
+}
+
+#listButton:hover{
+  background: url('/images/list.png');
+  opacity:1.0;
+  filter:alpha(opacity=100);
+}
+
+#refreshButton{
+  background: url('/images/refresh2.png');
+  position: absolute;
+  height: 23px;
+  width: 23px;
+  border: none;
+  bottom: 25px;
+  left: 60px;
+  opacity:0.65;
+  filter:alpha(opacity=65);
+}
+
+#refreshButton:hover{
+  background: url('/images/refresh2.png');
+  opacity:1.0;
+  filter:alpha(opacity=100);
+}
+
 #actualQuote{
-    color:#360D37;
-}
-
-#footer{
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    height: 32px;
-    width: 32px;
-}
-
-#settingsButton{
-    position: absolute;
-    bottom: 14px;
-    left: 10px;
-    background: url('/images/preferences.png');
-    height: 32px;
-    width: 32px;
-}
-
-#settingsButton:hover{
-    background: url('/images/preferences2.png');
-}
-
-h1{
     /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
     /*font-style: italic;*/
     font-family: 'Tangerine', cursive;
-    font-size: 2.90em;
-    color: black;
+    font-weight: bold;
+    font-size: 3.2em;
+    color:#360D37;
 }
 
 /* Message bar stuff */
@@ -59,6 +75,7 @@ h1{
     background-repeat: no-repeat;
     background-position: 10px center;
     background-color: #DEDEDE;
+    /*background-color: #E6D4E1;*/
 }
 
 #warningImage{
@@ -76,25 +93,21 @@ h1{
 
 #loginButton{
     position: absolute;
-    right: 360px;
-    top:15px;
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#99CF00), to(#6DB700));
+    right: 340px;
+    top:17px;
+    width:80px;
+    color:#DEDEDE;
 }
 
-#loginButton:hover{
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6DB700), to(#99CF00));    
-}
 
 #registerButton{
     position: absolute;
     right: 250px;
-    top:15px;
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#27bdf0), to(#20a6d4));
+    top:17px;
+    width:80px;
+    color:#DEDEDE;
 }
 
-#registerButton:hover{
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#20a6d4), to(#27bdf0));
-}
 
 #closeButton{
     position: absolute;
@@ -160,3 +173,6 @@ h1{
 	background: -moz-linear-gradient(19% 75% 90deg,#99CF00, #6DB700);
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6DB700), to(#99CF00));
 }
+
+
+

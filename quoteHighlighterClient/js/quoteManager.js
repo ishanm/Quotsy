@@ -59,10 +59,14 @@ QuoteManager = function(){
         if (JSON.parse(localStorage['loginStatus'])){
             // Remove trailing forward slash
             var addUrl = Config.host.replace(/\/$/, "") + "/quotes/add/";
-      
-            $.post(addUrl, item, function(data){
+            var data = $.param({
+              sid:localStorage['sid'],
+              quote_text:info.selectionText,
+              quote_url:info.pageUrl
+            });
+            
+            $.post(addUrl, data, function(data){
                 if (!data.responseSuccess){
-                    //TODO: Open a new tab/some other way of showing that the add wasn't successful
                 }
             });
         }

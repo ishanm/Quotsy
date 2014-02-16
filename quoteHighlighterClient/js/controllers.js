@@ -4,7 +4,7 @@ var allQuotesApp = angular.module('allQuotes', []);
 
 allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   function($http, $scope) {
-  
+  console.log('initializing the controller');
   /************************************************************************/
   /* Variables                                                            */
   /************************************************************************/
@@ -30,14 +30,19 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
     if ($scope.loggedIn){
       // Remove trailing forward slash
       var logoutUrl = Config.host.replace(/\/$/, "") + "/accounts/logout/";
+      
+      var data = $.param({
+        sid:localStorage['sid']
+      });
+      var config = {
+        headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+      }
         
-      $http.post(logoutUrl, {}).success(function(data, status, headers, config){
-        if (data.loginStatus == false){
-          $scope.closeLoginWarning = false;
-          $scope.quotes = [];
-          $scope.loggedIn = false;
-          $scope.loginText = "Login"; 
-        }
+      $http.post(logoutUrl, data, config).success(function(data, status, headers, config){
+        $scope.closeLoginWarning = false;
+        $scope.quotes = [];
+        $scope.loggedIn = false;
+        $scope.loginText = "Login"; 
       })
     }
     else{
@@ -65,32 +70,64 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   // If it is, it updates the quote on localStorage and the server
   // if the user is logged in
   $scope.editQuote = function(index){
-    console.log('got into the editQuote method');
     if ($scope.isEditModeOff(index)){
       editingMode[index] = true;
     }
     else{
       editingMode[index] = false;
-      if ($scope.loggedIn && $scope.quotes[index].hasOwnProperty('id')){
-        var update_url = Config.host.replace(/\/$/, "") + "/quotes/update/";
-        var data = $.param({
-          sid:localStorage['sid'],
-          quote_text:$scope.quotes[index].text,
-          quote_id:$scope.quotes[index].id
-        });
-        var config = {
-          headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+      // Update the server copy if the user is logged in
+      if ($scope.loggedIn){
+        if ($scope.quotes[index].hasOwnProperty('id')){
+          var update_url = Config.host.replace(/\/$/, "") + "/quotes/update/";
+          var data = $.param({
+            sid:localStorage['sid'],
+            quote_text:$scope.quotes[index].text,
+            quote_id:$scope.quotes[index].id
+          });
+          var config = {
+            headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+          }
+          
+          $http.post(update_url, data, config).success(function(data, status, headers, config){
+            console.log('Updated the quote successfully');
+          })
         }
-        
-        $http.post(update_url, data, config).success(function(data, status, headers, config){
-          console.log('Updated the quote successfully');
-        })
+        // Add the quote to the server and add the returned ID of the quote to the local version
+        else{
+          var add_url = Config.host.replace(/\/$/, "") + "/quotes/add/";
+          var data = $.param({
+            sid:localStorage['sid'],
+            quote_text:$scope.quotes[index].text
+          });
+          var config = {
+            headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+          }
+          
+          $http.post(add_url, data, config).success(function(data, status, headers, config){
+            console.log('Added the quote successfully');
+            $scope.quotes[0].id = data.quote_id;
+          })
+        }
       }
     }
     
   }
   
   $scope.deleteQuote = function(index){
+    if ($scope.loggedIn && $scope.quotes[index].hasOwnProperty('id')){
+      var delete_url = Config.host.replace(/\/$/, "") + "/quotes/delete/";
+      var data = $.param({
+        sid:localStorage['sid'],
+        quote_id:$scope.quotes[index].id
+      });
+      var config = {
+        headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+      }
+      
+      $http.post(delete_url, data, config).success(function(data, status, headers, config){
+        console.log('Deleted the quote successfully');
+      })
+    }
     $scope.quotes.splice(index, 1);
     localStorage['list'] = JSON.stringify($scope.quotes);
   }
@@ -137,8 +174,6 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   $scope.$watch('closeLoginWarning', function(newVal, oldVal){
     localStorage['closeLoginWarning'] = JSON.stringify($scope.closeLoginWarning);
   }, true)
-  
-
   
 }]);
 
