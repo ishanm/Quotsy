@@ -3,12 +3,14 @@
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="/css/register.css">
+        <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+
     </head>
     <body>
         <div class="container">
     
           <form class="form-signin" id="registerForm" role="form">
-            <h2 id="registerTitle" class="form-signin-heading">Register</h2>
+            <div id="header">Sign Up</div>
             
             <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
@@ -18,6 +20,7 @@
             <button class="btn btn-lg btn-primary btn-block" id="registerFormSubmit" type="button">Register</button>
             <div id="loadingIndicatorDiv"><img src="/images/ajax-loader.gif" id="loadingIndicator"/></div>
           </form>
+          <div id="loginMessage">Already have an account? <a href="/html/login.html">Sign in now</a></div>
     
         </div> <!-- /container -->
 

@@ -14,8 +14,23 @@ body{
     overflow: hidden;
     width: 70%;
     height: 30%;
-    top: 28%;
-    left: 15%;
+    margin-top: 220px;
+    margin-left: 15%;
+}
+
+
+#readMoreLink{
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    font-size: 1.2em;
+    width: 70%;
+    height: 30%;
+    margin-left: 15%;
+}
+
+#readMoreLink a:link{
+    color:#CC5500;
 }
 
 #listButton{
@@ -25,7 +40,7 @@ body{
   width: 25px;
   border: none;
   bottom: 23px;
-  left: 20px;
+  left: 25px;
   opacity:0.65;
   filter:alpha(opacity=65);
 }
@@ -175,4 +190,25 @@ body{
 }
 
 
+
+
+
+.ellip {
+  display: block;
+  height: 100%;
+}
+
+.ellip-line {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  max-width: 100%;
+}
+
+.ellip,
+.ellip-line {
+  position: relative;
+  overflow: hidden;
+}
 

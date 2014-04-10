@@ -107,3 +107,25 @@ body {
   opacity:1.0;
   filter:alpha(opacity=100); 
 }
+
+.blinkOn{
+  background: #d7d2dd;
+
+}
+
+.blinkOff{
+  background: none;
+  -webkit-transition: 0.5s linear all; /* Chrome */
+  transition: 0.5s linear all;
+  opacity: 1;
+}
+
+.animation-enter {
+	-webkit-transition: 1s linear all; /* Chrome */
+	transition: 1s linear all;
+	opacity: 0;
+}
+ 
+.animation-enter.animation-enter-active {
+	
+}

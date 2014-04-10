@@ -23,7 +23,8 @@ psql -U postgres -d quotsy -c "
 CREATE TABLE quotes(
   id serial primary key,
   account_id integer references accounts(id),
-  text varchar NOT NULL,
-  url varchar
+  text varchar,
+  url varchar,
+  hash varchar
 );
 "

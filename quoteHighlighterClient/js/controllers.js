@@ -2,9 +2,9 @@
 
 var allQuotesApp = angular.module('allQuotes', []);
 
-allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
-  function($http, $scope) {
-  console.log('initializing the controller');
+allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', 
+  function($http, $scope, $timeout) {
+  
   /************************************************************************/
   /* Variables                                                            */
   /************************************************************************/
@@ -14,6 +14,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   $scope.loggedIn = JSON.parse(localStorage['loginStatus']);
   $scope.closeLoginWarning = JSON.parse(localStorage['closeLoginWarning']);
   $scope.loginText = $scope.loggedIn == true ? "Logout" : "Login";
+  $scope.highlightDone = false;
   
   // Map of whether to show the input text field in place of the quote text
   // in the table of quotes. Key is index of the row, and value is boolean
@@ -59,7 +60,6 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   // other rows that were being edited
   $scope.addQuote = function(){
     $scope.quotes.unshift({'text':'', 'url':''});
-    //localStorage['list'] = JSON.stringify($scope.quotes);
     for (var key in editingMode){
       editingMode[key] = false;
     }
@@ -75,6 +75,11 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
     }
     else{
       editingMode[index] = false;
+      // Regardless of whether we're editing or adding a new quote, the hash of the quote
+      // needs to be updated
+      var newHash = CryptoJS.MD5($scope.quotes[index].text).toString();
+      $scope.quotes[index].hash = newHash;
+
       // Update the server copy if the user is logged in
       if ($scope.loggedIn){
         if ($scope.quotes[index].hasOwnProperty('id')){
@@ -82,6 +87,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
           var data = $.param({
             sid:localStorage['sid'],
             quote_text:$scope.quotes[index].text,
+            quote_hash:newHash,
             quote_id:$scope.quotes[index].id
           });
           var config = {
@@ -97,7 +103,8 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
           var add_url = Config.host.replace(/\/$/, "") + "/quotes/add/";
           var data = $.param({
             sid:localStorage['sid'],
-            quote_text:$scope.quotes[index].text
+            quote_text:$scope.quotes[index].text,
+            quote_hash:newHash,
           });
           var config = {
             headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
@@ -115,6 +122,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
   
   $scope.deleteQuote = function(index){
     if ($scope.loggedIn && $scope.quotes[index].hasOwnProperty('id')){
+      console.log('Going to try and delete a quote');
       var delete_url = Config.host.replace(/\/$/, "") + "/quotes/delete/";
       var data = $.param({
         sid:localStorage['sid'],
@@ -156,6 +164,20 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope',
     if (!$scope.isEditModeOff(index))
       css += " disabled";
     return css;
+  }
+  
+  $scope.checkHighlight = function(index){
+    console.log('Entering checkHighlight');
+    if (('#' + $scope.quotes[index].hash == window.location.hash)
+        && $scope.highlightDone == false){
+      $timeout(function(){
+        $scope.highlightDone = true;
+      }, 400);
+      return "blinkOn";
+    }
+    else{
+      return "blinkOff";
+    }
   }
   
   $scope.isEmptyListMessage = function(){

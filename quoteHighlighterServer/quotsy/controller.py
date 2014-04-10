@@ -56,6 +56,7 @@ def login(request):
 
 @utils.json_response
 def sync_quotes(request):
+    import pdb; pdb.set_trace()
     sid = request.POST.get('sid')
     all_quotes = json.loads(request.POST.get('quotes'))
     
@@ -73,7 +74,8 @@ def sync_quotes(request):
         dataMethods.insert_quotes(account_id, quotes_to_add)
     
     all_quotes = dataMethods.get_all_quotes(account_id)
-    return_val = [{'id':q[0], 'text':q[1], 'url':q[2]} for q in all_quotes]
+    return_val = [{'id':q[0], 'text':q[1], 'url':q[2], 'hash':q[3]} for q in all_quotes]
+    print "The quotes being synced are " + str(return_val)
 
     return return_val
 
@@ -82,22 +84,24 @@ def update_quote(request):
     sid = request.POST.get('sid')
     quote_id = json.loads(request.POST.get('quote_id'))
     quote_text = request.POST.get('quote_text')
+    quote_hash = request.POST.get('quote_hash')
     
     if not sid:
         raise QuotsyException("Sync quotes can only be called with a valid session id")
     
-    dataMethods.update_quote(quote_id, quote_text)
+    dataMethods.update_quote(quote_id, quote_text, quote_hash)
     
 @utils.json_response
 def add_quote(request):
     sid = request.POST.get('sid')
     quote_text = request.POST.get('quote_text')
-    url = request.POST.get('quote_url', None)
+    quote_url = request.POST.get('quote_url', None)
+    quote_hash = request.POST.get('quote_hash')
     
     session_manager = sessionHandler.SessionHandler()
     account_id = session_manager.get_val(sid, 'account_id')
     
-    quote_id = dataMethods.add_quote(account_id, quote_text, url)
+    quote_id = dataMethods.add_quote(account_id, quote_text, quote_url, quote_hash)
     
     return {'quote_id' : quote_id}
 

@@ -45,7 +45,9 @@ QuoteManager = function(){
         var allQuotes = JSON.parse(localStorage['list']);
         var allKeys = Object.keys(allQuotes);
         var randomKey = allKeys[Math.floor(allKeys.length * Math.random())];
+        //console.log(randomKey);
         var randomQuote = allQuotes[randomKey];
+        //console.log(randomQuote);
         return randomQuote;
     }
     
@@ -56,23 +58,32 @@ QuoteManager = function(){
         var item = {};
         item['text'] = info.selectionText;
         item['url'] = info.pageUrl;
+        item['hash'] = CryptoJS.MD5(info.selectionText).toString();
         if (JSON.parse(localStorage['loginStatus'])){
             // Remove trailing forward slash
             var addUrl = Config.host.replace(/\/$/, "") + "/quotes/add/";
             var data = $.param({
-              sid:localStorage['sid'],
-              quote_text:info.selectionText,
-              quote_url:info.pageUrl
+              sid: localStorage['sid'],
+              quote_text: item['text'],
+              quote_url: item['url'],
+              quote_hash: item['hash'] 
             });
             
             $.post(addUrl, data, function(data){
-                if (!data.responseSuccess){
-                }
+                // Since the user is logged in, update the db with the new quote, 
+                // get the new quotes id, and then add this to the localstorage
+                item['id'] = data.quote_id;
+                var list = JSON.parse(localStorage['list']);
+                list.push(item);
+                localStorage['list'] = JSON.stringify(list);
             });
         }
-        var list = JSON.parse(localStorage['list']);
-        list.push(item);
-        localStorage['list'] = JSON.stringify(list);
+        else{
+            var list = JSON.parse(localStorage['list']);
+            list.push(item);
+            localStorage['list'] = JSON.stringify(list);
+        }
+
     }
     
     /************************************************************************/

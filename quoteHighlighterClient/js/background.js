@@ -3,8 +3,9 @@
 /* Constants                                                            */
 /************************************************************************/
 var DEFAULT_ITEM = {
-    'text' : "It's a magical world, Hobbes, ol' buddy...Let's go exploring!",
-    'url' : 'http://bookriot.com/2012/02/06/sixteen-things-calvin-and-hobbes-said-better-than-anyone-else/'
+    text : "It's a magical world, Hobbes, ol' buddy...Let's go exploring!",
+    url : 'http://bookriot.com/2012/02/06/sixteen-things-calvin-and-hobbes-said-better-than-anyone-else/',
+    hash : '7f4e304a5a2e5e74a699175ca06193b6'
 };
 
 window.onload = main;
