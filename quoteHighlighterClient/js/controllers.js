@@ -2,8 +2,8 @@
 
 var allQuotesApp = angular.module('allQuotes', []);
 
-allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', 
-  function($http, $scope, $timeout) {
+allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', 'quoteManagerServer',
+  function($http, $scope, $timeout, quoteManagerServer) {
   
   /************************************************************************/
   /* Variables                                                            */
@@ -83,37 +83,13 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout',
       // Update the server copy if the user is logged in
       if ($scope.loggedIn){
         if ($scope.quotes[index].hasOwnProperty('id')){
-          var update_url = Config.host.replace(/\/$/, "") + "/quotes/update/";
-          var data = $.param({
-            sid:localStorage['sid'],
-            quote_text:$scope.quotes[index].text,
-            quote_hash:newHash,
-            quote_id:$scope.quotes[index].id
-          });
-          var config = {
-            headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-          }
-          
-          $http.post(update_url, data, config).success(function(data, status, headers, config){
-            console.log('Updated the quote successfully');
-          })
+          quoteManagerServer.updateQuote(localStorage['sid'], $scope.quotes[index].text, newHash, $scope.quotes[index].id);
         }
         // Add the quote to the server and add the returned ID of the quote to the local version
         else{
-          var add_url = Config.host.replace(/\/$/, "") + "/quotes/add/";
-          var data = $.param({
-            sid:localStorage['sid'],
-            quote_text:$scope.quotes[index].text,
-            quote_hash:newHash,
-          });
-          var config = {
-            headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-          }
-          
-          $http.post(add_url, data, config).success(function(data, status, headers, config){
-            console.log('Added the quote successfully');
+          quoteManagerServer.addQuote(localStorage['sid'], $scope.quotes[index].text, newHash, function(data){
             $scope.quotes[0].id = data.quote_id;
-          })
+          });
         }
       }
     }
@@ -214,6 +190,44 @@ allQuotesApp.directive('onEnter', function(){
     })
   }
 })
+
+allQuotesApp.service('quoteManagerServer', function($http){
+  this.updateQuote = function(sid, quoteText, quoteHash, quoteId){
+    var update_url = Config.host.replace(/\/$/, "") + "/quotes/update/";
+    var data = $.param({
+      sid:sid,
+      quote_text:quoteText,
+      quote_hash:quoteHash,
+      quote_id:quoteId
+    });
+    var config = {
+      headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+    }
+    
+    $http.post(update_url, data, config).success(function(data, status, headers, config){
+      console.log('Updated the quote successfully');
+    })
+  }
+
+  this.addQuote = function(sid, quoteText, quoteHash, successCb){
+    var add_url = Config.host.replace(/\/$/, "") + "/quotes/add/";
+    var data = $.param({
+      sid:sid,
+      quote_text:quoteText,
+      quote_hash:quoteHash,
+    });
+    var config = {
+      headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+    }
+    
+    $http.post(add_url, data, config).success(function(data, status, headers, config){
+      console.log('Added the quote successfully');
+      successCb(data);
+    })    
+  }
+})
+
+
 
 
 
