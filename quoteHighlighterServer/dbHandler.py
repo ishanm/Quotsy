@@ -2,6 +2,9 @@ import config
 import psycopg2
 import contextlib
 import exceptions
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DbException(Exception):
     def __init__(self, msg):
@@ -23,6 +26,7 @@ class PostgresqlHandler(object):
             self.user_name = db_settings['USER_NAME']
             self.password = db_settings['PASSWORD']
         except KeyError:
+            logger.error("The database settings aren't setup properly in the config file")
             raise exceptions.ConfigException('DATABASE')
 
         self.connection = None
@@ -31,12 +35,14 @@ class PostgresqlHandler(object):
         try:
             self.connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" % (self.db_name, self.user_name, self.host, self.password))
         except psycopg2.DatabaseError, e:
+            logger.error("Unable to connect to the database", exc_info=True)
             raise DbException(e)
         
     def _rollback(self):
         try:
             self.connection.rollback()
         except:
+            logger.error("There was an error rolling back the transcation.", exc_info=True)
             raise DbException("There was an error rolling back the transcation.")
         
     @contextlib.contextmanager
@@ -47,9 +53,9 @@ class PostgresqlHandler(object):
         try:
             yield self.connection.cursor()
         except Exception, e:
-            print e
             if not self.connection.closed:
                 self._rollback()
+            logger.error("There was an error running the query.", exc_info=True)
             raise DbException("There was an error running the query.")
         finally:
             if self.connection.closed:

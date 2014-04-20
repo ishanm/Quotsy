@@ -5,12 +5,16 @@ import os
 import hashlib
 import contextlib
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SessionHandler(object):
     def __init__(self):
         try:
             self.session_dir = config.config['SESSION_DIR']
         except KeyError:
+            logger.error('The SESSION_DIR key is not set properly in the config file', exc_info=True)
             raise exceptions.ConfigException('SESSION_DIR')
         
     def get_val(self, sid, key):
@@ -57,6 +61,9 @@ class SessionHandler(object):
         try:
             shelved_file = shelve.open(os.path.join(self.session_dir, sid), writeback=True)
             yield shelved_file
+        except:
+            logger.error('An error occured while working with shelved file for sid %s', sid, exc_info=True)
+            raise
         finally:
             shelved_file.close()
             

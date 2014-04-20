@@ -1,9 +1,14 @@
 from wsgiref.simple_server import make_server
 from requestResponse import Request, Response
-from config import config
 
 import exceptions
 import constants
+import logging
+import logging.config
+import config
+
+logger = logging.getLogger(__name__)
+logging.config.dictConfig(config.config['LOGGING'])
     
 # -----------------------------------
 # Views 
@@ -20,6 +25,7 @@ def get_view(path):
     try:
         view = viewMap[path]
     except KeyError:
+        logger.error('No view exists mapped to the path %s', path)
         raise exceptions.ServerException('No view exists mapped to the path %s' % path)
     return view
 
@@ -40,6 +46,7 @@ class DefaultApp():
         try:
             self.response = view(self.request)
         except Exception:
+            logger.error("An error was caught in the global error handler", exc_info=True)
             self.response = Response()
             self.response.status = 500
             self.response.headers['Content-Type'] = 'text/html'

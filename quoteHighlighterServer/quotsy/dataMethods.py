@@ -1,5 +1,8 @@
 import dbHandler
 import hashlib, uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 db = dbHandler.PostgresqlHandler()
 
@@ -61,23 +64,23 @@ def get_all_quotes(account_id):
     
     return all_quotes
 
-def update_quote(quote_id, quote_text, quote_hash):
+def update_quote(quote_id, quote_text, quote_hash, account_id):
     '''
     Called when a quote is edited in the manage quotes page. Updates the text of the quote
     '''
-    update_query = "UPDATE quotes SET text = %s, hash = %s WHERE id = %s;"
-    row_count = db.execute(update_query, (quote_text, quote_hash, quote_id))
+    update_query = "UPDATE quotes SET text = %s, hash = %s WHERE id = %s AND account_id = %s;"
+    row_count = db.execute(update_query, (quote_text, quote_hash, quote_id, account_id))
     
-def delete_quote(quote_id):
-    delete_query = "DELETE FROM quotes WHERE id = %s;"
-    row_count = db.execute(delete_query, (quote_id,))
+def delete_quote(quote_id, account_id):
+    delete_query = "DELETE FROM quotes WHERE id = %s AND account_id = %s;"
+    row_count = db.execute(delete_query, (quote_id, account_id))
     
 def add_quote(account_id, quote_text, quote_url, quote_hash):
     '''
     Called when a quote is added in the manage quotes page. Adds a single quote and
     returns the id of the quote.
     '''
-    
+    quote_text = quote_text or ''
     add_query = "INSERT INTO quotes (account_id, text, url, hash) values (%s, %s, %s, %s);"
     db.execute(add_query, (account_id, quote_text, quote_url, quote_hash))
     

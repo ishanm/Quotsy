@@ -88,7 +88,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', '
         // Add the quote to the server and add the returned ID of the quote to the local version
         else{
           quoteManagerServer.addQuote(localStorage['sid'], $scope.quotes[index].text, newHash, function(data){
-            $scope.quotes[0].id = data.quote_id;
+            $scope.quotes[index].id = data.quote_id;
           });
         }
       }
@@ -99,18 +99,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', '
   $scope.deleteQuote = function(index){
     if ($scope.loggedIn && $scope.quotes[index].hasOwnProperty('id')){
       console.log('Going to try and delete a quote');
-      var delete_url = Config.host.replace(/\/$/, "") + "/quotes/delete/";
-      var data = $.param({
-        sid:localStorage['sid'],
-        quote_id:$scope.quotes[index].id
-      });
-      var config = {
-        headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
-      }
-      
-      $http.post(delete_url, data, config).success(function(data, status, headers, config){
-        console.log('Deleted the quote successfully');
-      })
+      quoteManagerServer.deleteQuote(localStorage['sid'], $scope.quotes[index].id);
     }
     $scope.quotes.splice(index, 1);
     localStorage['list'] = JSON.stringify($scope.quotes);
@@ -224,6 +213,21 @@ allQuotesApp.service('quoteManagerServer', function($http){
       console.log('Added the quote successfully');
       successCb(data);
     })    
+  }
+
+  this.deleteQuote = function(sid, quote_id){
+    var delete_url = Config.host.replace(/\/$/, "") + "/quotes/delete/";
+    var data = $.param({
+      sid:localStorage['sid'],
+      quote_id:$scope.quotes[index].id
+    });
+    var config = {
+      headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+    }
+    
+    $http.post(delete_url, data, config).success(function(data, status, headers, config){
+      console.log('Deleted the quote successfully');
+    })
   }
 })
 

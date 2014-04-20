@@ -15,5 +15,35 @@ config = {
         'PASSWORD' : 'postgre'
     },
         
-    'SESSION_DIR' : '/Users/ishanmandhan/quoteHighlighter/quoteHighlighterServer/quotsy/session'
+    'SESSION_DIR' : '/Users/ishanmandhan/quoteHighlighter/quoteHighlighterServer/quotsy/session',
+
+    'LOGGING' : 
+        {
+            'version': 1,              
+            'disable_existing_loggers': False,
+            'formatters': {
+                'standard': {
+                    'format': '%(asctime)s [%(levelname)s] %(module)s: %(message)s'
+                },
+            },
+            'handlers': {
+                'default_file_handler': {
+                    'level':'DEBUG',    
+                    'class':'logging.handlers.RotatingFileHandler',
+                    "filename": "/Users/ishanmandhan/quoteHighlighter/quoteHighlighterServer/quotsy/logs/info.log",
+                    "maxBytes": "10485760",
+                    "backupCount": "20",
+                    "encoding": "utf8",
+                    'formatter' : 'standard'
+                }
+            },
+            'loggers': {
+                '': {                  
+                    'handlers': ['default_file_handler'],        
+                    'level': 'DEBUG',  
+                    'propagate': False
+                }
+            }
+        }
+
 }
