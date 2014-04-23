@@ -2,7 +2,7 @@ from urlparse import parse_qs
 from cgi import FieldStorage
 from Cookie import SimpleCookie
 
-import exceptions
+import exception
 
 class Request(object):
     def __init__(self, environ):
@@ -39,7 +39,7 @@ class Request(object):
         """
         
         if self.method != "POST":
-            raise exceptions.ServerException("Request method was not POST")
+            raise exception.ServerException("Request method was not POST")
 
         if self._post is None:
             self._post = {}

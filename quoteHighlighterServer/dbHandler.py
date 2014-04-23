@@ -1,7 +1,7 @@
 import config
 import psycopg2
 import contextlib
-import exceptions
+import exception
 import logging
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ class PostgresqlHandler(object):
             self.password = db_settings['PASSWORD']
         except KeyError:
             logger.error("The database settings aren't setup properly in the config file")
-            raise exceptions.ConfigException('DATABASE')
+            raise exception.ConfigException('DATABASE')
 
         self.connection = None
         

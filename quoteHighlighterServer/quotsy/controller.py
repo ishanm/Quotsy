@@ -5,6 +5,7 @@ import utils
 import json
 import logging
 import config
+import platform
 
 logger = logging.getLogger(__name__)
 
@@ -140,6 +141,9 @@ server.add_view('/quotes/add', add_quote)
 server.add_view('/quotes/update', update_quote)
 server.add_view('/quotes/delete', delete_quote)
 
-server.serve()
+if 'local' in platform.node():
+    server.serve()
+else:
+    application = server.DefaultApp()
 
 

@@ -1,5 +1,5 @@
 import config
-import exceptions
+import exception
 import shelve
 import os
 import hashlib
@@ -15,7 +15,7 @@ class SessionHandler(object):
             self.session_dir = config.config['SESSION_DIR']
         except KeyError:
             logger.error('The SESSION_DIR key is not set properly in the config file', exc_info=True)
-            raise exceptions.ConfigException('SESSION_DIR')
+            raise exception.ConfigException('SESSION_DIR')
         
     def get_val(self, sid, key):
         '''

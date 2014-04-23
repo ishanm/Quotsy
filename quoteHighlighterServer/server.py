@@ -1,7 +1,7 @@
 from wsgiref.simple_server import make_server
 from requestResponse import Request, Response
 
-import exceptions
+import exception
 import constants
 import logging
 import logging.config
@@ -26,7 +26,8 @@ def get_view(path):
         view = viewMap[path]
     except KeyError:
         logger.error('No view exists mapped to the path %s', path)
-        raise exceptions.ServerException('No view exists mapped to the path %s' % path)
+        import pdb; pdb.set_trace()
+        raise exception.ServerException('No view exists mapped to the path %s' % path)
     return view
 
 # -----------------------------------
