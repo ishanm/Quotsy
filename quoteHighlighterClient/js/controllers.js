@@ -15,6 +15,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', '
   $scope.closeLoginWarning = JSON.parse(localStorage['closeLoginWarning']);
   $scope.loginText = $scope.loggedIn == true ? "Logout" : "Login";
   $scope.highlightDone = false;
+  $scope.funnyQuoteIndex = Math.floor((Math.random()*4)+1);
   
   // Map of whether to show the input text field in place of the quote text
   // in the table of quotes. Key is index of the row, and value is boolean
@@ -219,7 +220,7 @@ allQuotesApp.service('quoteManagerServer', function($http){
     var delete_url = Config.host.replace(/\/$/, "") + "/quotes/delete/";
     var data = $.param({
       sid:localStorage['sid'],
-      quote_id:$scope.quotes[index].id
+      quote_id:quote_id
     });
     var config = {
       headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}

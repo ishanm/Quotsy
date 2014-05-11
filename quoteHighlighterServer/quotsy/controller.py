@@ -18,6 +18,7 @@ class QuotsyException(Exception):
 
 @utils.json_response
 def register(request):
+    return {'test':True}
     username = request.POST['username']
     password = request.POST['password']
     logger.info('Entered the register method for user %s', username)
@@ -132,7 +133,11 @@ def logout(request):
     session_manager = sessionHandler.SessionHandler()
     session_manager.delete_session_file(sid)
     
-
+@utils.json_response
+def test(request):
+    return {'test':True}
+    
+server.add_view('/test', test)
 server.add_view('/accounts/register', register)
 server.add_view('/accounts/login', login)
 server.add_view('/accounts/logout', logout)

@@ -26,7 +26,6 @@ def get_view(path):
         view = viewMap[path]
     except KeyError:
         logger.error('No view exists mapped to the path %s', path)
-        import pdb; pdb.set_trace()
         raise exception.ServerException('No view exists mapped to the path %s' % path)
     return view
 

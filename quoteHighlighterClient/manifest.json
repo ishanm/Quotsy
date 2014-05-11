@@ -1,14 +1,17 @@
 {
-  "name": "Quote Highlighter",
-  "version": "0.0.1",
+  "name": "Quotsy",
+  "version": "0.0.8",
   "manifest_version": 2,
-  "description": "Highlight random quotes you find while surfing, and have a random one show up on opening a new tab.",
-  "permissions": ["contextMenus", "https://www.shopperspoll.com/*", "http://127.0.0.1:8000/*"],
+  "description": "Collect & manage phrases you find while reading stuff online. Have a random one show on your new-tab page so you never forget them!",
+  "permissions": ["contextMenus", "https://www.quotsy.net/*"],
   "background" : {
     "page" : "html/background.html"
+  },
+  "icons": {
+          "16": "images/contextQuotsy.png"
   },
   "chrome_url_overrides" : {
     "newtab" : "html/quotePage.html"
   },
-  "content_security_policy": "script-src 'self' http://127.0.0.1:8000 https://www.shopperspoll.com https://ajax.googleapis.com; object-src 'self'"
+  "content_security_policy": "script-src 'self' http://127.0.0.1:8000 https://www.shopperspoll.com https://ajax.googleapis.com https://ssl.google-analytics.com; object-src 'self'"
 }
