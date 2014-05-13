@@ -1,6 +1,6 @@
 {
   "name": "Quotsy",
-  "version": "0.0.8",
+  "version": "0.0.11",
   "manifest_version": 2,
   "description": "Collect & manage phrases you find while reading stuff online. Have a random one show on your new-tab page so you never forget them!",
   "permissions": ["contextMenus", "https://www.quotsy.net/*"],

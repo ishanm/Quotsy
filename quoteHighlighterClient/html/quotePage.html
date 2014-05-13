@@ -9,7 +9,7 @@
     <body>
         <div class="warning">
             <img id="warningImage" src="/images/warning.png"/>
-            <div id="warningText">You aren't logged in right now. Logging in will backup your quotes so you never lose them!</div>
+            <div id="warningText">You aren't logged in right now. Logging in is <b>optional</b> but it will backup your quotes so you never lose them!</div>
             <a id="loginButton" href="/html/login.html" class="btn btn-danger btn-xs">Login</a>
             <a id="registerButton" href="/html/register.html" class="btn btn-primary btn-xs">Register</a>
             <a id="closeButton" href="#"></a>
@@ -17,14 +17,15 @@
         
         <!--<img id="leftQuoteMark" src="/images/leftQuote.png" style="border: dashed"/>-->
         <div id="quoteDiv">
-            <div id="actualQuote">
-            </div>
+            <a id="actualQuote" href="">
+            </a>
         </div>
+        <div id='readMoreTextDiv'><a id='readMoreText' href=''>See full quote</a></div>
         
 
         
         <a href="/html/showAllQuotes.html" id="listButton"></a>
-        <!--<button id="refreshButton"></button>-->
+        <button id="refreshButton"></button>
         
         <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="/js/jquery.autoellipsis-1.0.10.min.js"></script>

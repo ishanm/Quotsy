@@ -24,7 +24,7 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', '
   /************************************************************************/
   /* Functions                                                            */
   /************************************************************************/
-  
+
   // Show 'Login' or 'Logout' in the navbar according to the login status.
   // For the logout logic, reset all the localstorage values. For the login
   // logic redirect to login page
@@ -148,6 +148,15 @@ allQuotesApp.controller('AllQuotesController', ['$http', '$scope', '$timeout', '
   
   $scope.isEmptyListMessage = function(){
     return $scope.quotes.length == 0;
+  }
+
+  $scope.showLink = function(quote){
+    if (quote.url && quote.url != ""){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
   
   // Watchers to keep the localStorage in sync with angular models

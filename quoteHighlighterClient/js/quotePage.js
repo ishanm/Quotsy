@@ -8,7 +8,7 @@ $(document).ready(function () {
     
     function setClickHandlers(){
         $('#refreshButton').click(function(){
-            displayQuote(QuoteManager.getRandomQuote());
+            location.reload();
         });
     }
     
@@ -28,6 +28,13 @@ $(document).ready(function () {
     function displayQuote(randomQuote){
         var quote = randomQuote['text'];
         $('#actualQuote').html(randomQuote['text']);
+        if (randomQuote['url'] && randomQuote['url'] != ""){
+            $('#actualQuote').attr('href', randomQuote['url']);
+        }
+        else{
+            $('#actualQuote').attr("disabled","disabled").css("cursor", "default")
+            $(actualQuote).css('textDecoration', 'none');
+        }
         
         // Dynamically adjust the size and position of the quote
         // depending on the length of the quote text
@@ -49,12 +56,15 @@ $(document).ready(function () {
             height: 480,
             callback: function( isTruncated, orgContent ) {
                 // Show the readmore link if the ellipsis was added
-                var readMorelink = "<br><a id='readMoreText' href='/html/showAllQuotes.html#" + randomQuote['hash'] + "'>See full quote</a>";
+                var readMorelink = "<br>";
                 if (isTruncated){
-                   $('#actualQuote').append(readMorelink);
+                    $('#readMoreText').attr('href', '/html/showAllQuotes.html#' + randomQuote['hash']);
+                    $('#readMoreText').show();
+                    $('#actualQuote').append(readMorelink);
                 }
                 else{
                     $('#actualQuote').append(" \"");
+                    $('#readMoreText').hide();
                 }
                 $('#actualQuote').prepend("\"");
             },

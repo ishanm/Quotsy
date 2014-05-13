@@ -4,6 +4,9 @@ body{
     background-size: cover;
 }
 
+a{
+  text-decoration: none;
+}
 @font-face {
   font-family: 'Tangerine';
   src: url('../fonts/Tangerine_Regular.ttf');
@@ -24,9 +27,17 @@ body{
     margin-left: 15%;
 }
 
+#readMoreTextDiv{
+    width: 120px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 #readMoreText{
-    font-size: 0.8em;
     color:#B1233C;
+    font-family: 'Tangerine', cursive;
+    font-weight: bold;
+    font-size: 2.2em;
 }
 
 #listButton{
@@ -48,19 +59,19 @@ body{
 }
 
 #refreshButton{
-  background: url('/images/refresh2.png');
+  background: url('/images/refresh4.png');
   position: absolute;
-  height: 23px;
-  width: 23px;
+  height: 30px;
+  width: 30px;
   border: none;
-  bottom: 25px;
-  left: 60px;
-  opacity:0.65;
-  filter:alpha(opacity=65);
+  bottom: 32px;
+  left: 74px;
+  opacity:0.80;
+  filter:alpha(opacity=80);
 }
 
 #refreshButton:hover{
-  background: url('/images/refresh2.png');
+  background: url('/images/refresh4.png');
   opacity:1.0;
   filter:alpha(opacity=100);
 }

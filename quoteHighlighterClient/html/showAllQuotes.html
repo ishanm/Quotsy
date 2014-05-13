@@ -63,7 +63,10 @@
       <table class="table">
         <tr ng-repeat="quote in quotes | filter:query track by $index">
           <td class="glyphicon glyphicon-leaf" style="color: grey;"></td>
-          <td id="{{quote.hash}}"  ng-class="checkHighlight($index);" ng-show="isEditModeOff($index);">{{quote.text}}</td>
+          <td id="{{quote.hash}}"  ng-class="checkHighlight($index);" ng-show="isEditModeOff($index);">
+            <a href="{{quote.url}}" ng-show="showLink(quote);" >{{quote.text}}</a>
+            <div ng-show="!showLink(quote);">{{quote.text}}</div>
+          </td>
           
           <td ng-show="!isEditModeOff($index);">
             <textarea name="editQuote" ng-model="quote.text" on-enter="editQuote($index)" placeholder=" Enter your quote here" style="width:100%;"></textarea>
